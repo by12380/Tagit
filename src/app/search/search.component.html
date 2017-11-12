@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-md-8">
+    <form #f="ngForm" (ngSubmit)="listFiles(f.value)">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Subject:</label>
+        <div class="col-sm-8">
+          <select ngModel class="form-control" name="subject">
+            <option value="algebra 2">Algebra 2</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Chapter</label>
+        <div class="col-sm-8">
+          <input ngModel class="form-control" name="chapter">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Section</label>
+        <div class="col-sm-8">
+          <input ngModel class="form-control" name="section">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Type:</label>
+        <div class="col-sm-8">
+          <select ngModel class="form-control" name="type">
+            <option value="free response">Free Response</option>
+            <option value="multiple choice">Multiple Choice</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    
+    <br />
+    <br />
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Subject</th>
+          <th>Chapter</th>
+          <th>Section</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let file of result">
+          <td>{{file.name}}</td>
+          <td>{{file.appProperties.subject}}</td>
+          <td>{{file.appProperties.chapter}}</td>
+          <td>{{file.appProperties.section}}</td>
+          <td><a [href]="file.webViewLink" target="_blank">View</a></td>
+          <td><a href="javascript:;" (click)="delete(file.id)">Delete</a></td>
+          <td><a href="javascript:;" (click)="add(file)">Add</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4">
+    <div class="row" *ngIf="problemCollection.length">
+      <div class="col-8">
+        <div class="list-group">
+          <a 
+            *ngFor="let problem of problemCollection; let i = index"
+            href="javascript:;"
+            class="list-group-item list-group-item-action"
+            [class.active]="isSelected(i)"
+            (click)="setSelectedIndex(i)">
+            {{problem.name}}
+          </a>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="btn-group-vertical" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-sm btn-secondary" (click)="moveUp()">Up</button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="moveDown()">Down</button>
+          <button type="button" class="btn btn-sm btn-danger" (click)="remove()">Remove</button>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
