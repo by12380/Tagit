@@ -5,6 +5,7 @@
         <label class="col-sm-2 col-form-label">Subject:</label>
         <div class="col-sm-8">
           <select ngModel class="form-control" name="subject">
+            <option value=""></option>
             <option value="algebra 2">Algebra 2</option>
           </select>
         </div>
@@ -25,6 +26,7 @@
         <label class="col-sm-2 col-form-label">Type:</label>
         <div class="col-sm-8">
           <select ngModel class="form-control" name="type">
+            <option value=""></option>
             <option value="free response">Free Response</option>
             <option value="multiple choice">Multiple Choice</option>
           </select>
@@ -32,7 +34,6 @@
       </div>
       <button class="btn btn-primary" type="submit">Search</button>
     </form>
-    
     <br />
     <br />
     <table class="table table-hover">
@@ -45,6 +46,7 @@
           <th></th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -54,6 +56,7 @@
           <td>{{file.appProperties.chapter}}</td>
           <td>{{file.appProperties.section}}</td>
           <td><a [href]="file.webViewLink" target="_blank">View</a></td>
+          <td><a href="javascript:;" (click)="open(content, file)">Edit</a></td>
           <td><a href="javascript:;" (click)="delete(file.id)">Delete</a></td>
           <td><a href="javascript:;" (click)="add(file)">Add</a></td>
         </tr>
@@ -79,8 +82,69 @@
           <button type="button" class="btn btn-sm btn-secondary" (click)="moveUp()">Up</button>
           <button type="button" class="btn btn-sm btn-secondary" (click)="moveDown()">Down</button>
           <button type="button" class="btn btn-sm btn-danger" (click)="remove()">Remove</button>
+          <button type="button" class="btn btn-sm btn-success" (click)="generate()">Generate</button>
         </div>
       </div>
     </div>
     </div>
 </div>
+
+<ng-template #content let-c="close">
+  <div class="modal-body">
+    <form #u="ngForm" (ngSubmit)="update(u.value)">
+      <input [(ngModel)]="fileId" hidden name="fileId">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name:</label>
+        <div class="col-sm-8">
+            <label class="col-form-label">{{name}}</label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Subject:</label>
+        <div class="col-sm-8">
+          <select [(ngModel)]="subject" class="form-control" name="subject">
+            <option value="algebra 2">Algebra 2</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Chapter</label>
+        <div class="col-sm-8">
+          <input [(ngModel)]="chapter" class="form-control" name="chapter">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Section</label>
+        <div class="col-sm-8">
+          <input [(ngModel)]="section" class="form-control" name="section">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Type:</label>
+        <div class="col-sm-8">
+          <select [(ngModel)]="type" class="form-control" name="type">
+            <option value="free response">Free Response</option>
+            <option value="multiple choice">Multiple Choice</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Format:</label>
+        <div class="col-sm-8">
+          <select [(ngModel)]="format" class="form-control" name="format">
+            <option value="a">A</option>
+            <option value="b">B</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Answer Key</label>
+        <div class="col-sm-6">
+          <input [(ngModel)]="answerKey" class="form-control" name="answerKey">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="c()">Cancel</button>
+    </form>
+  </div>
+</ng-template>

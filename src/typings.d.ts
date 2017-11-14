@@ -7,3 +7,4 @@ interface NodeModule {
 //Custom Typings
 declare var gapi;
 declare var MediaUploader;
+declare var jsPDF;

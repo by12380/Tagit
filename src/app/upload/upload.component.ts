@@ -37,7 +37,8 @@ export class UploadComponent implements OnInit {
               "chapter": formValues.chapter,
               "section": formValues.section,
               "type": formValues.type,
-              "solutionFileId": ""
+              "format": formValues.format,
+              "answerKey": formValues.answerKey
             }
           },
           onComplete: function(data) {

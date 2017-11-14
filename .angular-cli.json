@@ -22,7 +22,8 @@
         "styles.css"
       ],
       "scripts": [
-        "./assets/js/upload.js"
+        "./assets/js/upload.js",
+        "../node_modules/jspdf/dist/jspdf.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
