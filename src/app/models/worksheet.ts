@@ -11,18 +11,22 @@ export class Worksheet {
     private y;
     private horizontal_count;
     private vertical_count;
+    private count;
 
     constructor() {
         this.x = 20;
         this.y = 20;
         this.horizontal_count = 0;
         this.vertical_count = 0;
+        this.count = 1;
         this.doc = jsPDF();
+        this.doc.setFontSize(8);
     }
 
     add(imgData: string, format: string) {
 
         if (format == this.FORM_A) {
+            this.doc.text(this.x - 5, this.y, this.count +".");
             this.doc.addImage(imgData, 'JPEG', this.x, this.y, this.FORM_A_WIDTH, this.FORM_A_HEIGHT);
             this.x += 85;
             this.horizontal_count ^= 1;
@@ -40,6 +44,7 @@ export class Worksheet {
             this.newRow();
         }
 
+        this.count++
     }
 
     save() {
