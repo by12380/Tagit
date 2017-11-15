@@ -36,16 +36,6 @@ export class SearchComponent implements OnInit {
     );
   }
 
-  async listFiles(formValues) {
-    var that = this;
-    await gapi.client.drive.files.list({
-      fields: "*",
-      q: this.queryBuilder(formValues)
-    }).then(function(response) {
-      that.result = response.result.files;
-    });
-  }
-
   add(file) {
     var problem: Problem = {
       fileId: file.id,
@@ -64,12 +54,43 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  async generate() {
+    let worksheet = new Worksheet();
+
+    for(let problem of this.problemCollection) {
+      let format;
+      await gapi.client.drive.files.get({
+        fileId: problem.fileId,
+        fields: "appProperties(format)"
+      }).then(function(data){
+        format = data.result.appProperties.format;
+      })
+
+      await gapi.client.drive.files.get({
+        fileId: problem.fileId,
+        alt: "media"
+      }).then(function(data){
+        var imgData = 'data:image/jpeg;base64,';
+        imgData += btoa(data.body);
+        worksheet.add(imgData, format);
+      })
+    }
+
+    worksheet.save();
+  }
+
   isSelected(index) {
     return this.worksheetService.isSelectedIndex(index);
   }
 
-  setSelectedIndex(index) {
-    this.worksheetService.setSelectedIndex(index);
+  async listFiles(formValues) {
+    var that = this;
+    await gapi.client.drive.files.list({
+      fields: "*",
+      q: this.queryBuilder(formValues)
+    }).then(function(response) {
+      that.result = response.result.files;
+    });
   }
 
   moveUp() {
@@ -94,6 +115,10 @@ export class SearchComponent implements OnInit {
 
   remove() {
     this.worksheetService.remove();
+  }
+
+  setSelectedIndex(index) {
+    this.worksheetService.setSelectedIndex(index);
   }
 
   update(formValues, modal) {
@@ -134,31 +159,6 @@ export class SearchComponent implements OnInit {
     }
 
     return queryString;
-  }
-
-  async generate() {
-    let worksheet = new Worksheet();
-
-    for(let problem of this.problemCollection) {
-      let format;
-      await gapi.client.drive.files.get({
-        fileId: problem.fileId,
-        fields: "appProperties(format)"
-      }).then(function(data){
-        format = data.result.appProperties.format;
-      })
-
-      await gapi.client.drive.files.get({
-        fileId: problem.fileId,
-        alt: "media"
-      }).then(function(data){
-        var imgData = 'data:image/jpeg;base64,';
-        imgData += btoa(data.body);
-        worksheet.add(imgData, format);
-      })
-    }
-
-    worksheet.save();
   }
 
 }
