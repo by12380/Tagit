@@ -78,11 +78,16 @@
         </div>
       </div>
       <div class="col-4">
-        <div class="btn-group-vertical" role="group" aria-label="Basic example">
+        <div class="btn-group-vertical mb-3" role="group">
           <button type="button" class="btn btn-sm btn-secondary" (click)="moveUp()">Up</button>
           <button type="button" class="btn btn-sm btn-secondary" (click)="moveDown()">Down</button>
           <button type="button" class="btn btn-sm btn-danger" (click)="remove()">Remove</button>
+        </div>
+        <div class="btn-group-vertical mb-3" role="group">
           <button type="button" class="btn btn-sm btn-success" (click)="generate()">Generate</button>
+        </div>
+        <div class="btn-group-vertical" role="group">
+          <button type="button" class="btn btn-sm btn-danger" (click)="removeAll()">Remove All</button>
         </div>
       </div>
     </div>

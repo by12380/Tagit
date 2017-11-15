@@ -117,6 +117,10 @@ export class SearchComponent implements OnInit {
     this.worksheetService.remove();
   }
 
+  removeAll() {
+    this.worksheetService.removeAll();
+  }
+
   setSelectedIndex(index) {
     this.worksheetService.setSelectedIndex(index);
   }

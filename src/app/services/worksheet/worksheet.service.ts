@@ -57,6 +57,14 @@ export class WorksheetService {
         }
     }
 
+    removeAll() {
+        let result = confirm("Are you sure you want to remove everything from this list?");
+        if (result) {
+            this.problemList = [];
+            this.problemListSource.next(this.problemList);
+        }
+    }
+
 }
 
     
