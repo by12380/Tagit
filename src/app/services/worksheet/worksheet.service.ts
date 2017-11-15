@@ -31,7 +31,7 @@ export class WorksheetService {
     }
 
     moveUp() {
-        if(this.selectedIndex >= 0) {
+        if(this.selectedIndex != null) {
             var item = this.problemList[this.selectedIndex];
             this.problemList.splice(this.selectedIndex, 1);
             this.problemList.splice(this.selectedIndex - 1, 0, item);
@@ -41,7 +41,7 @@ export class WorksheetService {
     }
 
     moveDown() {
-        if(this.selectedIndex >= 0) {
+        if(this.selectedIndex != null) {
             var item = this.problemList[this.selectedIndex];
             this.problemList.splice(this.selectedIndex, 1);
             this.problemList.splice(this.selectedIndex + 1, 0, item);
@@ -51,7 +51,7 @@ export class WorksheetService {
     }
 
     remove() {
-        if(this.selectedIndex >= 0) {
+        if(this.selectedIndex != null) {
             this.problemList.splice(this.selectedIndex, 1);
             this.selectedIndex = null;
         }
