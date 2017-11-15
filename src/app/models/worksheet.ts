@@ -30,7 +30,6 @@ export class Worksheet {
             this.doc.addImage(imgData, 'JPEG', this.x, this.y, this.FORM_A_WIDTH, this.FORM_A_HEIGHT);
             this.x += 85;
             this.horizontal_count ^= 1;
-            
             if (this.horizontal_count == 0) {
                 this.newRow();
             }
@@ -40,6 +39,7 @@ export class Worksheet {
             if (this.horizontal_count != 0) {
                 this.newRow();
             }
+            this.doc.text(this.x - 5, this.y, this.count +".");
             this.doc.addImage(imgData, 'JPEG', this.x, this.y, this.FORM_B_WIDTH, this.FORM_B_HEIGHT);
             this.newRow();
         }
@@ -54,6 +54,7 @@ export class Worksheet {
     private newRow() {
         this.x = 20;
         this.y += 65
+        this.horizontal_count = 0;
         this.vertical_count += 1;
 
         if (this.vertical_count % 4 == 0) {

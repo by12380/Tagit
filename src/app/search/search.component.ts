@@ -140,13 +140,21 @@ export class SearchComponent implements OnInit {
     let worksheet = new Worksheet();
 
     for(let problem of this.problemCollection) {
+      let format;
+      await gapi.client.drive.files.get({
+        fileId: problem.fileId,
+        fields: "appProperties(format)"
+      }).then(function(data){
+        format = data.result.appProperties.format;
+      })
+
       await gapi.client.drive.files.get({
         fileId: problem.fileId,
         alt: "media"
       }).then(function(data){
         var imgData = 'data:image/jpeg;base64,';
         imgData += btoa(data.body);
-        worksheet.add(imgData, 'a');
+        worksheet.add(imgData, format);
       })
     }
 
