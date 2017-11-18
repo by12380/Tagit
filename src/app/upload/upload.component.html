@@ -45,4 +45,8 @@
   </div>
   <input type="file" #fileupload name="myFile" (change)="fileChange(fileupload.files)"/>
   <button type="submit" class="btn btn-primary">Submit</button>
+  <div *ngIf="isUploading">
+    <span>Uploading...</span>
+    <img src="./assets/images/spinner.svg"/>
+  </div>
 </form>

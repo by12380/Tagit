@@ -2,7 +2,6 @@ import { Worksheet } from './../models/worksheet';
 import { Problem } from './../models/problem';
 import { WorksheetService } from './../services/worksheet/worksheet.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import * as bootbox from 'bootbox';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -26,6 +25,8 @@ export class SearchComponent implements OnInit {
   answerKey;
   //Modal
   modal: NgbModalRef;
+
+  isLoading = false;
 
   constructor(private worksheetService: WorksheetService, private modalService: NgbModal) {}
 
@@ -55,6 +56,7 @@ export class SearchComponent implements OnInit {
   }
 
   async generate() {
+    this.isLoading = true;
     let worksheet = new Worksheet();
 
     for(let problem of this.problemCollection) {
@@ -76,6 +78,7 @@ export class SearchComponent implements OnInit {
       })
     }
 
+    this.isLoading = false;
     worksheet.save();
   }
 

@@ -9,6 +9,7 @@ export class UploadComponent implements OnInit {
 
   file: File;
   result = [];
+  isUploading = false;
 
 
   constructor() { }
@@ -21,6 +22,7 @@ export class UploadComponent implements OnInit {
   }
   
   onSubmit(formValues): void {
+      this.isUploading = true;
       var uploader = new MediaUploader({
         file: this.file,
         token: gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse(true).access_token,
@@ -53,5 +55,6 @@ export class UploadComponent implements OnInit {
         }
       });
       uploader.upload();
+      this.isUploading = false;
   }
 }
