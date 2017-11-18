@@ -22,6 +22,7 @@ export class UploadComponent implements OnInit {
   }
   
   onSubmit(formValues): void {
+      let that = this;
       this.isUploading = true;
       var uploader = new MediaUploader({
         file: this.file,
@@ -52,9 +53,9 @@ export class UploadComponent implements OnInit {
             fileId: JSON.parse(data).id
           }).then();
           alert("Submitted!");
+          that.isUploading = false;
         }
       });
       uploader.upload();
-      this.isUploading = false;
   }
 }
