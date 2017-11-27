@@ -11,7 +11,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SearchComponent implements OnInit {
 
-  file: File;
+  //file: File;
   result = [];
   problemCollection: Problem[] = [];
   // Update Form Values
@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
   type;
   format;
   answerKey;
+  solutionFileId;
   //Modal
   modal: NgbModalRef;
 
@@ -41,7 +42,9 @@ export class SearchComponent implements OnInit {
     var problem: Problem = {
       fileId: file.id,
       name: file.name,
-      webViewLink: file.webViewLink
+      webViewLink: file.webViewLink,
+      type: file.appProperties.type,
+      solutionFileId: file.appProperties.solutionFileId
     }
     this.worksheetService.add(problem);
   }
@@ -58,6 +61,7 @@ export class SearchComponent implements OnInit {
   async generate() {
     this.isLoading = true;
     let worksheet = new Worksheet();
+    let solution = new Worksheet();
 
     for(let problem of this.problemCollection) {
       let format;
@@ -76,10 +80,22 @@ export class SearchComponent implements OnInit {
         imgData += btoa(data.body);
         worksheet.add(imgData, format);
       })
+
+      if (problem.type == 'free response') {
+        await gapi.client.drive.files.get({
+          fileId: problem.solutionFileId,
+          alt: "media"
+        }).then(function(data){
+          var imgData = 'data:image/jpeg;base64,';
+          imgData += btoa(data.body);
+          solution.add(imgData, 'a');
+        })
+      }
     }
 
     this.isLoading = false;
     worksheet.save();
+    solution.save();
   }
 
   isSelected(index) {
@@ -112,7 +128,8 @@ export class SearchComponent implements OnInit {
     this.section = file.appProperties.section;
     this.type = file.appProperties.type;
     this.format = file.appProperties.format;
-    this.answerKey = file.appProperties.answerKey
+    this.answerKey = file.appProperties.answerKey;
+    this.solutionFileId = file.appProperties.solutionFileId;
     this.modal = this.modalService.open(content);
   }
 
@@ -144,6 +161,43 @@ export class SearchComponent implements OnInit {
       alert("Updated!");
       that.modal.close();
     });
+  }
+
+  async updateSolution(files: any){
+    let that = this;
+    let file = files[0];
+    let result = confirm("Are you sure you want to upload this solution?");
+    if (result) {
+
+      if (this.solutionFileId) {
+        await gapi.client.drive.files.delete({
+          fileId: this.solutionFileId
+        }).then();
+      }
+
+      var uploader = new MediaUploader({
+        file: file,
+        token: gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse(true).access_token,
+        metadata: {
+          'name': file.name,
+          'mimeType': file.type,
+          'parents': [
+            "1Ds9TkPgNLBuhz7jZ4Z2ClsWN3U0tZ7Hy"
+          ],
+        },
+        onComplete: function(data) {
+          gapi.client.drive.files.update({
+            fileId: that.fileId,
+            appProperties: {
+              "solutionFileId": JSON.parse(data).id 
+            }
+          }).then(function(){
+            alert("Solution Uploaded!");
+          })
+        }
+      });
+      uploader.upload();
+    }
   }
 
   private queryBuilder(formValues): string{
