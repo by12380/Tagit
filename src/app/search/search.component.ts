@@ -49,13 +49,22 @@ export class SearchComponent implements OnInit {
     this.worksheetService.add(problem);
   }
 
-  delete(fileId) {
+  delete(file) {
+
     var result = confirm("Are you sure you want to delete this file?");
+
     if (result) {
       gapi.client.drive.files.delete({
-        fileId: fileId
+        fileId: file.id
       }).then();
+
+      if (file.appProperties.solutionFileId) {
+        gapi.client.drive.files.delete({
+          fileId: file.appProperties.solutionFileId
+        }).then();
+      }
     }
+
   }
 
   async generate() {
