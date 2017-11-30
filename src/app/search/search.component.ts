@@ -43,6 +43,8 @@ export class SearchComponent implements OnInit {
     var problem: Problem = {
       fileId: file.id,
       name: file.name,
+      chapter: file.appProperties.chapter,
+      section: file.appProperties.section,
       webViewLink: file.webViewLink,
       type: file.appProperties.type,
       solutionFileId: file.appProperties.solutionFileId
@@ -68,9 +70,9 @@ export class SearchComponent implements OnInit {
 
   }
 
-  async generate() {
+  async generate(showSectionHeader: boolean) {
     this.isLoading = true;
-    let worksheet = new Worksheet();
+    let worksheet = new Worksheet(showSectionHeader);
     let solution = new Worksheet();
 
     for(let problem of this.problemCollection) {
@@ -88,7 +90,7 @@ export class SearchComponent implements OnInit {
       }).then(function(data){
         var imgData = 'data:image/jpeg;base64,';
         imgData += btoa(data.body);
-        worksheet.add(imgData, format);
+        worksheet.add(imgData, format, problem.chapter, problem.section);
       })
 
       if (problem.type == 'free response') {

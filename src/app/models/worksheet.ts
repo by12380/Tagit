@@ -12,8 +12,9 @@ export class Worksheet {
     private horizontal_count;
     private vertical_count;
     private count;
+    private showSectionHeader;
 
-    constructor() {
+    constructor(showSectionHeader?) {
         this.x = 20;
         this.y = 20;
         this.horizontal_count = 0;
@@ -21,13 +22,17 @@ export class Worksheet {
         this.count = 1;
         this.doc = jsPDF();
         this.doc.setFontSize(8);
+        this.showSectionHeader = showSectionHeader || false;
     }
 
-    add(imgData: string, format: string) {
+    add(imgData: string, format: string, chapter?: string, section?: string) {
 
         if (format == this.FORM_A) {
             this.doc.text(this.x - 5, this.y, this.count +".");
             this.doc.addImage(imgData, 'JPEG', this.x, this.y, this.FORM_A_WIDTH, this.FORM_A_HEIGHT);
+            if (this.showSectionHeader && chapter && section) {
+                this.doc.text(this.x + 70, this.y, "["+chapter+"."+section+"]");
+            }
             this.x += 85;
             this.horizontal_count ^= 1;
             if (this.horizontal_count == 0) {
