@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
   format;
   answerKey;
   solutionFileId;
-  
+
   //Modal
   modal: NgbModalRef;
 
@@ -141,6 +141,18 @@ export class SearchComponent implements OnInit {
     this.answerKey = file.appProperties.answerKey;
     this.solutionFileId = file.appProperties.solutionFileId;
     this.modal = this.modalService.open(content);
+  }
+
+  pick(amount) {
+    let i = 0;
+    let tracker: number[] = [];
+    while ((i < amount) && (tracker.length < this.result.length)) {
+      let index = Math.floor(Math.random() * this.result.length);
+      if (tracker.includes(index)) continue;
+      this.add(this.result[index]);
+      tracker.push(index);
+      i++;
+    }
   }
 
   remove() {
