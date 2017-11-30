@@ -43,7 +43,21 @@
       gapi.client.init({
         apiKey: API_KEY,
         discoveryDocs: DISCOVERY_DOCS,
+      }).then(function(){
+        // Listen for sign-in state changes.
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
       });
+    }
+
+    /**
+     *  Called when the signed in status changes, to update the UI
+     *  appropriately. After a sign-in, the API is called.
+     */
+    function updateSigninStatus(isSignedIn) {
+      if (!isSignedIn) {
+        alert('You have been signed out!');
+        gapi.auth2.getAuthInstance().signIn();
+      }
     }
   </script>
 
