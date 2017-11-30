@@ -11,9 +11,9 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SearchComponent implements OnInit {
 
-  //file: File;
   result = [];
   problemCollection: Problem[] = [];
+
   // Update Form Values
   fileId;
   name;
@@ -24,6 +24,7 @@ export class SearchComponent implements OnInit {
   format;
   answerKey;
   solutionFileId;
+  
   //Modal
   modal: NgbModalRef;
 

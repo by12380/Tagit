@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@angular/core';
 import { WorksheetService } from './services/worksheet/worksheet.service';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,6 +12,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { UploadComponent } from './upload/upload.component';
 import { LoginComponent } from './login/login.component';
 import { SearchComponent } from './search/search.component';
+
+import { GapiErrorHandler } from './common/gapi-error-handler';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import { SearchComponent } from './search/search.component';
     ])
   ],
   providers: [
-    WorksheetService
+    WorksheetService,
+    { provide: ErrorHandler, useClass: GapiErrorHandler}
   ],
   bootstrap: [AppComponent]
 })
